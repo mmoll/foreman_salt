@@ -12,7 +12,7 @@ module ForemanSalt
          def all(proxy)
            raise ::Foreman::Exception.new(N_('Must specify a Smart Proxy to use')) if proxy.nil?
 
-           unless (keys == Rails.cache.read("saltkeys_#{proxy.id}"))
+           unless (keys = Rails.cache.read("saltkeys_#{proxy.id}"))
              api = ProxyAPI::Salt.new({:url => proxy.url})
              keys = api.key_list.map do |name, properties|
                new([name.strip, properties['state'], properties['fingerprint'], proxy.id])
